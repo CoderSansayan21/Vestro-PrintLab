@@ -26,6 +26,7 @@ pnpm-debug.log*
 venv/
 backend/venv/
 env/
+backend/.venv
 __pycache__/
 *.py[cod]
 *$py.class
