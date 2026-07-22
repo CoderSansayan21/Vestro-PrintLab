@@ -24,7 +24,7 @@ pnpm-debug.log*
 
 # ---------- Python / FastAPI (backend) ----------
 venv/
-backend/venv/
+backend/.venv/
 env/
 __pycache__/
 *.py[cod]
