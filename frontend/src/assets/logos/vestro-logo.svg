@@ -1,0 +1,10 @@
+<svg width="260" height="72" viewBox="0 0 260 72" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">VESTRO PRINTLAB logo placeholder</title>
+  <desc id="desc">Placeholder wordmark for VESTRO PRINTLAB. Replace this file with the final logo asset.</desc>
+  <rect width="260" height="72" rx="18" fill="#111827"/>
+  <rect x="1" y="1" width="258" height="70" rx="17" stroke="#818CF8" stroke-opacity="0.55" stroke-width="2"/>
+  <path d="M27 18H45L36 51L27 18Z" fill="#A78BFA"/>
+  <path d="M45 18H63L36 51L45 18Z" fill="#38BDF8"/>
+  <text x="78" y="32" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="2">VESTRO</text>
+  <text x="78" y="52" fill="#C4B5FD" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2.6">PRINTLAB</text>
+</svg>
