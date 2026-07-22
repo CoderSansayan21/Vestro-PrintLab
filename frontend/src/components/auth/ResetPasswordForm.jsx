@@ -8,6 +8,15 @@ const initialValues = {
   confirmPassword: '',
 };
 
+const passwordWrapClass =
+  'mt-2 flex rounded-xl border border-vestro-border bg-vestro-elevated/80 transition hover:border-vestro-cyan/45 focus-within:border-vestro-cyan focus-within:ring-4 focus-within:ring-vestro-cyan/15';
+const buttonClass =
+  'inline-flex w-full items-center justify-center gap-3 rounded-xl border border-vestro-pink/60 bg-vestro-pink px-5 py-3.5 text-sm font-black text-vestro-text shadow-vestro-pink transition hover:-translate-y-0.5 hover:border-vestro-cyan/70 hover:shadow-vestro-cyan focus-visible:outline-vestro-cyan disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0';
+
+function ButtonSpinner() {
+  return <span aria-hidden="true" className="h-4 w-4 rounded-full border-2 border-white/35 border-t-white motion-safe:animate-spin" />;
+}
+
 function ResetPasswordForm() {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -64,15 +73,15 @@ function ResetPasswordForm() {
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit} noValidate>
-      {apiError && <p className="rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{apiError}</p>}
-      {successMessage && <p className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">{successMessage}</p>}
-      {errors.token && <p className="rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{errors.token}</p>}
+      {apiError && <p className="text-sm font-medium text-vestro-pink">{apiError}</p>}
+      {successMessage && <p className="text-sm font-medium text-emerald-300">{successMessage}</p>}
+      {errors.token && <p className="text-sm font-medium text-vestro-pink">{errors.token}</p>}
 
       <div>
-        <label htmlFor="new-password" className="text-sm font-medium text-slate-200">
+        <label htmlFor="new-password" className="text-sm font-bold text-vestro-text">
           New password
         </label>
-        <div className="mt-2 flex rounded-2xl border border-white/10 bg-slate-950/70 transition focus-within:border-indigo-400 focus-within:ring-4 focus-within:ring-indigo-500/15">
+        <div className={passwordWrapClass}>
           <input
             id="new-password"
             name="password"
@@ -80,25 +89,23 @@ function ResetPasswordForm() {
             autoComplete="new-password"
             value={values.password}
             onChange={updateField}
-            className="min-w-0 flex-1 rounded-l-2xl bg-transparent px-4 py-3 text-white outline-none placeholder:text-slate-500"
+            className="min-w-0 flex-1 rounded-l-xl bg-transparent px-4 py-3 text-vestro-text outline-none placeholder:text-vestro-muted/70"
             placeholder="Enter new password"
+            aria-invalid={errors.password ? 'true' : undefined}
+            aria-describedby={errors.password ? 'new-password-error' : undefined}
           />
-          <button
-            type="button"
-            onClick={() => togglePassword('password')}
-            className="px-4 text-sm font-semibold text-indigo-300 transition hover:text-indigo-200"
-          >
+          <button type="button" onClick={() => togglePassword('password')} className="px-4 text-sm font-bold text-vestro-cyan transition hover:text-vestro-pink focus-visible:outline-vestro-cyan">
             {visiblePasswords.password ? 'Hide' : 'Show'}
           </button>
         </div>
-        {errors.password && <p className="mt-2 text-sm text-rose-300">{errors.password}</p>}
+        {errors.password && <p id="new-password-error" className="mt-2 text-sm text-vestro-pink">{errors.password}</p>}
       </div>
 
       <div>
-        <label htmlFor="reset-confirm-password" className="text-sm font-medium text-slate-200">
+        <label htmlFor="reset-confirm-password" className="text-sm font-bold text-vestro-text">
           Confirm new password
         </label>
-        <div className="mt-2 flex rounded-2xl border border-white/10 bg-slate-950/70 transition focus-within:border-indigo-400 focus-within:ring-4 focus-within:ring-indigo-500/15">
+        <div className={passwordWrapClass}>
           <input
             id="reset-confirm-password"
             name="confirmPassword"
@@ -106,31 +113,26 @@ function ResetPasswordForm() {
             autoComplete="new-password"
             value={values.confirmPassword}
             onChange={updateField}
-            className="min-w-0 flex-1 rounded-l-2xl bg-transparent px-4 py-3 text-white outline-none placeholder:text-slate-500"
+            className="min-w-0 flex-1 rounded-l-xl bg-transparent px-4 py-3 text-vestro-text outline-none placeholder:text-vestro-muted/70"
             placeholder="Repeat new password"
+            aria-invalid={errors.confirmPassword ? 'true' : undefined}
+            aria-describedby={errors.confirmPassword ? 'reset-confirm-password-error' : undefined}
           />
-          <button
-            type="button"
-            onClick={() => togglePassword('confirmPassword')}
-            className="px-4 text-sm font-semibold text-indigo-300 transition hover:text-indigo-200"
-          >
+          <button type="button" onClick={() => togglePassword('confirmPassword')} className="px-4 text-sm font-bold text-vestro-cyan transition hover:text-vestro-pink focus-visible:outline-vestro-cyan">
             {visiblePasswords.confirmPassword ? 'Hide' : 'Show'}
           </button>
         </div>
-        {errors.confirmPassword && <p className="mt-2 text-sm text-rose-300">{errors.confirmPassword}</p>}
+        {errors.confirmPassword && <p id="reset-confirm-password-error" className="mt-2 text-sm text-vestro-pink">{errors.confirmPassword}</p>}
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-2xl bg-indigo-600 px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-indigo-950/40 transition hover:-translate-y-0.5 hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
-      >
+      <button type="submit" disabled={loading} className={buttonClass}>
+        {loading && <ButtonSpinner />}
         {loading ? 'Resetting...' : 'Reset Password'}
       </button>
 
-      <p className="text-center text-sm text-slate-300">
+      <p className="text-center text-sm text-vestro-muted">
         Ready to continue?{' '}
-        <Link to="/login" className="font-semibold text-indigo-300 hover:text-indigo-200">
+        <Link to="/login" className="font-bold text-vestro-cyan transition hover:text-vestro-pink">
           Login
         </Link>
       </p>
