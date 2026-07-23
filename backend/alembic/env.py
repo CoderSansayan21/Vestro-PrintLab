@@ -1,4 +1,3 @@
-import os
 import sys
 from logging.config import fileConfig
 from pathlib import Path
@@ -10,6 +9,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
+from app.core.config import get_database_settings  # noqa: E402
 from app.core.database import Base  # noqa: E402
 from app.modules.auth import models as auth_models  # noqa: F401,E402
 from app.modules.users import models as user_models  # noqa: F401,E402
@@ -19,9 +19,7 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-DATABASE_URL = os.getenv('DATABASE_URL')
-if DATABASE_URL:
-    config.set_main_option('sqlalchemy.url', DATABASE_URL)
+config.set_main_option('sqlalchemy.url', get_database_settings().database_url)
 
 target_metadata = Base.metadata
 

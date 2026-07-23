@@ -1,15 +1,11 @@
-from datetime import datetime, timedelta, timezone
-
-from fastapi import HTTPException, status
-from jose import ExpiredSignatureError, JWTError, jwt
 from passlib.context import CryptContext
-
-from app.core.config import get_settings
+from passlib.exc import UnknownHashError
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
 def hash_password(password: str) -> str:
+    """Hash a plaintext password with bcrypt for safe database storage."""
     password_bytes = password.encode('utf-8')
 
     if len(password_bytes) > 72:
@@ -19,50 +15,13 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a plaintext password against a stored bcrypt hash."""
     password_bytes = plain_password.encode('utf-8')
 
-    if len(password_bytes) > 72:
+    if len(password_bytes) > 72 or not hashed_password:
         return False
 
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def create_access_token(user_id: int, role: str) -> str:
-    settings = get_settings()
-    expires_at = datetime.now(timezone.utc) + timedelta(minutes=settings.access_token_expire_minutes)
-    payload = {
-        'sub': str(user_id),
-        'user_id': user_id,
-        'role': role,
-        'exp': expires_at,
-    }
-
-    return jwt.encode(payload, settings.secret_key, algorithm=settings.algorithm)
-
-
-def decode_access_token(token: str) -> dict:
-    settings = get_settings()
-
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
-    except ExpiredSignatureError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Authentication token has expired.',
-            headers={'WWW-Authenticate': 'Bearer'},
-        ) from exc
-    except JWTError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid authentication token.',
-            headers={'WWW-Authenticate': 'Bearer'},
-        ) from exc
-
-    if not payload.get('user_id') or not payload.get('role'):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid authentication token.',
-            headers={'WWW-Authenticate': 'Bearer'},
-        )
-
-    return payload
+        return pwd_context.verify(plain_password, hashed_password)
+    except (UnknownHashError, ValueError, TypeError):
+        return False
