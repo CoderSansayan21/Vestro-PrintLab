@@ -1,8 +1,8 @@
 const variants = {
-  success: 'border-emerald-400/40 bg-emerald-400/10 text-emerald-200',
+  success: 'border-vestro-gold/45 bg-vestro-gold/10 text-vestro-gold-light',
   warning: 'border-amber-300/40 bg-amber-300/10 text-amber-100',
-  danger: 'border-vestro-pink/50 bg-vestro-pink/10 text-pink-100',
-  info: 'border-vestro-cyan/50 bg-vestro-cyan/10 text-cyan-100',
+  danger: 'border-red-300/45 bg-red-300/10 text-red-200',
+  info: 'border-vestro-gold/45 bg-vestro-gold/10 text-vestro-gold-light',
   neutral: 'border-vestro-border bg-vestro-elevated/80 text-vestro-muted',
 };
 

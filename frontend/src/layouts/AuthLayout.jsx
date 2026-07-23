@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/logos/vestro-logo.svg';
+import logo from '../assets/logos/vestro-logo (2).png';
 
 function AuthLayout({ children, eyebrow, title, description }) {
   return (

@@ -9,7 +9,7 @@ function LoadingSpinner({ label = 'Loading', size = 'md', className = '' }) {
     <span className={`inline-flex items-center gap-3 text-sm text-vestro-muted ${className}`}>
       <span
         aria-hidden="true"
-        className={`${sizes[size] || sizes.md} rounded-full border-vestro-cyan/25 border-t-vestro-cyan shadow-vestro-cyan motion-safe:animate-spin`}
+        className={`${sizes[size] || sizes.md} rounded-full border-vestro-gold/25 border-t-vestro-gold-light shadow-vestro-gold motion-safe:animate-spin`}
       />
       <span className="sr-only">{label}</span>
       {label && <span aria-hidden="true">{label}</span>}

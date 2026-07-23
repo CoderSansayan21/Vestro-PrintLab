@@ -1,4 +1,5 @@
 import os
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -6,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api_router import api_router
 from app.core.database import test_database_connection
+
+logger = logging.getLogger(__name__)
 
 
 def get_cors_origins() -> list[str]:
@@ -16,7 +19,7 @@ def get_cors_origins() -> list[str]:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if not test_database_connection():
-        raise RuntimeError('Database connection failed during application startup.')
+        logger.warning('Database connection unavailable during startup. Application will continue running.')
 
     yield
 

@@ -36,7 +36,7 @@ function Modal({
 
       <section
         className={joinClasses(
-          'relative w-full max-w-lg rounded-3xl border border-vestro-cyan/35 bg-vestro-card p-5 text-vestro-text shadow-vestro-cyan sm:p-6',
+          'relative w-full max-w-lg rounded-2xl border border-vestro-gold/35 bg-vestro-card p-5 text-vestro-text shadow-vestro-gold sm:p-6',
           className,
         )}
       >
@@ -58,7 +58,7 @@ function Modal({
             type="button"
             aria-label={closeLabel}
             onClick={onClose}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-vestro-pink/35 bg-vestro-pink/10 text-xl font-bold text-vestro-text transition hover:border-vestro-cyan/60 hover:bg-vestro-cyan/10 hover:shadow-vestro-cyan focus-visible:outline-vestro-cyan"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-vestro-gold/35 bg-vestro-gold/10 text-xl font-bold text-vestro-text transition hover:border-vestro-gold-light hover:bg-vestro-gold/15 hover:shadow-vestro-gold focus-visible:outline-vestro-gold"
           >
             <span aria-hidden="true">&times;</span>
           </button>

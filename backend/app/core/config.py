@@ -14,6 +14,22 @@ class Settings(BaseSettings):
     secret_key: str = Field(..., alias='SECRET_KEY')
     algorithm: str = Field('HS256', alias='ALGORITHM')
     access_token_expire_minutes: int = Field(30, alias='ACCESS_TOKEN_EXPIRE_MINUTES')
+    google_oauth_client_id: str | None = Field(default=None, alias='GOOGLE_OAUTH_CLIENT_ID')
+    google_oauth_client_secret: str | None = Field(default=None, alias='GOOGLE_OAUTH_CLIENT_SECRET')
+    google_oauth_redirect_uri: str | None = Field(default=None, alias='GOOGLE_OAUTH_REDIRECT_URI')
+    google_oauth_authorize_url: str = Field(
+        'https://accounts.google.com/o/oauth2/v2/auth',
+        alias='GOOGLE_OAUTH_AUTHORIZE_URL',
+    )
+    google_oauth_token_url: str = Field(
+        'https://oauth2.googleapis.com/token',
+        alias='GOOGLE_OAUTH_TOKEN_URL',
+    )
+    google_oauth_userinfo_url: str = Field(
+        'https://openidconnect.googleapis.com/v1/userinfo',
+        alias='GOOGLE_OAUTH_USERINFO_URL',
+    )
+    google_oauth_scopes: str = Field('openid email profile', alias='GOOGLE_OAUTH_SCOPES')
 
 
 @lru_cache
@@ -30,3 +46,39 @@ class DatabaseSettings(BaseSettings):
 @lru_cache
 def get_database_settings() -> DatabaseSettings:
     return DatabaseSettings()
+
+
+class GoogleOAuthSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=ENV_FILE,
+        env_file_encoding='utf-8',
+        extra='ignore',
+        populate_by_name=True,
+    )
+
+    client_id: str | None = Field(default=None, alias='GOOGLE_OAUTH_CLIENT_ID')
+    client_secret: str | None = Field(default=None, alias='GOOGLE_OAUTH_CLIENT_SECRET')
+    redirect_uri: str | None = Field(default=None, alias='GOOGLE_OAUTH_REDIRECT_URI')
+    authorize_url: str = Field(
+        'https://accounts.google.com/o/oauth2/v2/auth',
+        alias='GOOGLE_OAUTH_AUTHORIZE_URL',
+    )
+    token_url: str = Field('https://oauth2.googleapis.com/token', alias='GOOGLE_OAUTH_TOKEN_URL')
+    userinfo_url: str = Field(
+        'https://openidconnect.googleapis.com/v1/userinfo',
+        alias='GOOGLE_OAUTH_USERINFO_URL',
+    )
+    scopes: str = Field('openid email profile', alias='GOOGLE_OAUTH_SCOPES')
+
+    @property
+    def is_configured(self) -> bool:
+        return bool(self.client_id and self.client_secret and self.redirect_uri)
+
+    @property
+    def scope_list(self) -> list[str]:
+        return [scope for scope in self.scopes.split() if scope]
+
+
+@lru_cache
+def get_google_oauth_settings() -> GoogleOAuthSettings:
+    return GoogleOAuthSettings()

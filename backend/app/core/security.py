@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta, timezone
 
-import bcrypt
 from fastapi import HTTPException, status
 from jose import ExpiredSignatureError, JWTError, jwt
+from passlib.context import CryptContext
 
 from app.core.config import get_settings
+
+pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
 def hash_password(password: str) -> str:
@@ -13,7 +15,7 @@ def hash_password(password: str) -> str:
     if len(password_bytes) > 72:
         raise ValueError('Password must not exceed 72 bytes for bcrypt hashing.')
 
-    return bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode('utf-8')
+    return pwd_context.hash(password)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -22,7 +24,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     if len(password_bytes) > 72:
         return False
 
-    return bcrypt.checkpw(password_bytes, hashed_password.encode('utf-8'))
+    return pwd_context.verify(plain_password, hashed_password)
 
 
 def create_access_token(user_id: int, role: str) -> str:

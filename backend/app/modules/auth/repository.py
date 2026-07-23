@@ -15,17 +15,35 @@ def get_user_by_email(db: Session, email: str) -> User | None:
     return db.scalar(select(User).where(User.email == email))
 
 
+def get_user_by_username(db: Session, username: str) -> User | None:
+    return db.scalar(select(User).where(User.username == username))
+
+
+def get_user_by_nic_number(db: Session, nic_number: str) -> User | None:
+    return db.scalar(select(User).where(User.nic_number == nic_number))
+
+
 def get_user_by_phone(db: Session, phone: str) -> User | None:
-    return db.scalar(select(User).where(User.phone == phone))
+    return get_user_by_nic_number(db, phone)
 
 
-def create_user(db: Session, *, full_name: str, email: str, phone: str | None, hashed_password: str) -> User:
+def create_user(
+    db: Session,
+    *,
+    full_name: str,
+    username: str,
+    email: str,
+    nic_number: str,
+    password_hash: str,
+    role: str,
+) -> User:
     user = User(
         full_name=full_name,
+        username=username,
         email=email,
-        phone=phone,
-        hashed_password=hashed_password,
-        role='customer',
+        nic_number=nic_number,
+        password_hash=password_hash,
+        role=role,
     )
     db.add(user)
     db.commit()
@@ -59,8 +77,8 @@ def mark_password_reset_token_used(db: Session, reset_token: PasswordResetToken)
     return reset_token
 
 
-def update_user_password(db: Session, user: User, hashed_password: str) -> User:
-    user.hashed_password = hashed_password
+def update_user_password(db: Session, user: User, password_hash: str) -> User:
+    user.password_hash = password_hash
     user.updated_at = datetime.now(timezone.utc)
     db.add(user)
     db.commit()

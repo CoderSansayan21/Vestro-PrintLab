@@ -6,10 +6,11 @@ import {
   registerUser,
   resetPassword as submitPasswordReset,
 } from '../services/authService.js';
-
-const AUTH_TOKEN_KEY = 'authToken';
-const AUTH_USER_KEY = 'authUser';
-const LEGACY_AUTH_KEY = 'vestro-auth';
+import {
+  AUTH_TOKEN_KEY,
+  AUTH_USER_KEY,
+  clearStoredAuth,
+} from '../services/apiClient.js';
 
 const getErrorMessage = (error) => error?.message || 'Authentication request failed.';
 
@@ -32,7 +33,7 @@ const readStoredUser = () => {
 const extractToken = (response) =>
   response?.token || response?.accessToken || response?.access_token || response?.data?.token || response?.data?.accessToken || response?.data?.access_token || '';
 
-const extractUser = (response) => response?.user || response?.data?.user || response?.data || null;
+const extractUser = (response) => response?.user || response?.data?.user || response?.data || response || null;
 
 const createLoginPayload = (payload) => {
   const { remember, ...credentials } = payload;
@@ -40,16 +41,14 @@ const createLoginPayload = (payload) => {
 };
 
 const createRegistrationPayload = (payload) => {
-  const { confirmPassword, agree, remember, ...registrationPayload } = payload;
-  return registrationPayload;
-};
+  const { confirmPassword, terms, agree, remember, fullName, nic, role, ...registrationPayload } = payload;
 
-const clearStoredAuth = () => {
-  localStorage.removeItem(AUTH_TOKEN_KEY);
-  localStorage.removeItem(AUTH_USER_KEY);
-  localStorage.removeItem(LEGACY_AUTH_KEY);
-  sessionStorage.removeItem(AUTH_TOKEN_KEY);
-  sessionStorage.removeItem(AUTH_USER_KEY);
+  return {
+    ...registrationPayload,
+    full_name: fullName,
+    nic_number: nic,
+    role: role || 'customer',
+  };
 };
 
 const setStoredAuth = ({ token, user, remember }) => {
@@ -107,16 +106,13 @@ const useAuthStore = create((set, get) => ({
 
     try {
       const response = await registerUser(createRegistrationPayload(userData));
-      const token = extractToken(response);
-      const user = extractUser(response);
 
-      setStoredAuth({ token, user, remember: true });
       set({
-        user,
-        token,
+        user: null,
+        token: '',
         loading: false,
         error: '',
-        isAuthenticated: Boolean(token),
+        isAuthenticated: false,
       });
 
       return response;
@@ -191,5 +187,17 @@ const useAuthStore = create((set, get) => ({
     }
   },
 }));
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('vestro:auth:unauthorized', () => {
+    useAuthStore.setState({
+      user: null,
+      token: '',
+      loading: false,
+      error: 'Your session has expired. Please sign in again.',
+      isAuthenticated: false,
+    });
+  });
+}
 
 export default useAuthStore;

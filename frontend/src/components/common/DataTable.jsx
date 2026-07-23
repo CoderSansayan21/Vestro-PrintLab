@@ -20,7 +20,7 @@ function DataTable({
     <div className={`overflow-hidden rounded-2xl border border-vestro-border bg-vestro-card/90 shadow-vestro-sm ${className}`}>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-vestro-border text-left text-sm">
-          <thead className="bg-vestro-secondary/95 text-xs font-black uppercase tracking-[0.16em] text-vestro-cyan">
+          <thead className="bg-vestro-secondary/95 text-xs font-black uppercase tracking-[0.16em] text-vestro-gold-light">
             <tr>
               {columns.map((column) => (
                 <th key={column.key || column.header} scope="col" className="whitespace-nowrap px-4 py-4">
@@ -41,7 +41,7 @@ function DataTable({
               data.map((row, rowIndex) => (
                 <tr
                   key={getRowKey ? getRowKey(row) : row.id || rowIndex}
-                  className="transition hover:bg-vestro-cyan/5"
+                  className="transition hover:bg-vestro-gold/5"
                 >
                   {columns.map((column) => {
                     const value = getCellValue(row, column);

@@ -11,7 +11,7 @@ export function PrimaryButton({ className = '', type = 'button', children, ...pr
       type={type}
       className={joinClasses(
         baseButtonClasses,
-        'border border-vestro-pink/60 bg-vestro-pink text-vestro-text shadow-vestro-pink focus-visible:outline-vestro-cyan hover:-translate-y-0.5 hover:border-vestro-cyan/70 hover:bg-[#ff2ba3] hover:shadow-vestro-cyan',
+        'border border-vestro-gold/70 bg-vestro-gold text-vestro-page shadow-vestro-gold focus-visible:outline-vestro-gold hover:-translate-y-0.5 hover:border-vestro-gold-light hover:bg-vestro-gold-light',
         className,
       )}
       {...props}
@@ -27,7 +27,7 @@ export function SecondaryButton({ className = '', type = 'button', children, ...
       type={type}
       className={joinClasses(
         baseButtonClasses,
-        'border border-vestro-cyan/50 bg-vestro-elevated/80 text-vestro-text shadow-vestro-cyan focus-visible:outline-vestro-pink hover:-translate-y-0.5 hover:border-vestro-pink/70 hover:bg-vestro-card',
+        'border border-vestro-gold/40 bg-transparent text-vestro-text focus-visible:outline-vestro-gold hover:-translate-y-0.5 hover:border-vestro-gold-light hover:bg-vestro-gold/10 hover:text-vestro-gold-light',
         className,
       )}
       {...props}

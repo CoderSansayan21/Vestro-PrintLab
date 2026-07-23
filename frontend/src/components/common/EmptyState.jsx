@@ -6,7 +6,7 @@ function EmptyState({ title, description, action, icon, className = '' }) {
       className={`flex min-h-56 flex-col items-center justify-center px-6 py-10 text-center ${className}`}
     >
       {icon && (
-        <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-vestro-cyan/30 bg-vestro-cyan/10 text-vestro-cyan shadow-vestro-cyan">
+        <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-vestro-gold/30 bg-vestro-gold/10 text-vestro-gold-light shadow-vestro-gold">
           {icon}
         </div>
       )}

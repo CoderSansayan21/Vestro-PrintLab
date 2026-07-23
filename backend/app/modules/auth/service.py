@@ -3,6 +3,7 @@ import secrets
 from datetime import datetime, timedelta, timezone
 
 from fastapi import HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.security import create_access_token, hash_password, verify_password
@@ -46,33 +47,48 @@ def register_customer(db: Session, registration: UserRegisterRequest) -> User:
             detail='An account with this email already exists.',
         )
 
-    if registration.phone and repository.get_user_by_phone(db, registration.phone):
+    if repository.get_user_by_username(db, registration.username):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail='An account with this phone number already exists.',
+            detail='An account with this username already exists.',
         )
 
-    hashed_password = hash_password(registration.password)
+    if repository.get_user_by_nic_number(db, registration.nic_number):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail='An account with this NIC number already exists.',
+        )
 
-    return repository.create_user(
-        db,
-        full_name=registration.full_name,
-        email=registration.email,
-        phone=registration.phone,
-        hashed_password=hashed_password,
-    )
+    password_hash = hash_password(registration.password)
+
+    try:
+        return repository.create_user(
+            db,
+            full_name=registration.full_name,
+            username=registration.username,
+            email=registration.email,
+            nic_number=registration.nic_number,
+            password_hash=password_hash,
+            role=registration.role,
+        )
+    except IntegrityError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail='An account with these details already exists.',
+        ) from exc
 
 
 def authenticate_user(db: Session, credentials: LoginRequest) -> LoginResponse:
     user = repository.get_user_by_email(db, credentials.email)
 
-    if not user or not verify_password(credentials.password, user.hashed_password):
+    if not user or not verify_password(credentials.password, user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=INVALID_CREDENTIALS_MESSAGE)
 
     if not user.is_active:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='This account is inactive.')
 
-    access_token = create_access_token(user_id=user.user_id, role=user.role)
+    access_token = create_access_token(user_id=user.id, role=user.role)
     return LoginResponse(access_token=access_token, user=user)
 
 
@@ -87,7 +103,7 @@ def request_password_reset(
         reset_token = generate_reset_token()
         repository.create_password_reset_token(
             db,
-            user_id=user.user_id,
+            user_id=user.id,
             hashed_token=hash_reset_token(reset_token),
             expires_at=datetime.now(timezone.utc) + timedelta(minutes=PASSWORD_RESET_EXPIRE_MINUTES),
         )

@@ -4,7 +4,7 @@ function SectionTitle({ eyebrow, title, description, align = 'left', className =
   return (
     <div className={`${alignment} max-w-3xl ${className}`}>
       {eyebrow && (
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-vestro-cyan">
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-vestro-gold-light">
           {eyebrow}
         </p>
       )}

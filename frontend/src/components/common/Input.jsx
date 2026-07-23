@@ -29,7 +29,7 @@ function FieldShell({ id, label, hint, error, children, containerClassName = '' 
       )}
 
       {error && (
-        <p id={`${id}-error`} className="text-xs leading-5 text-vestro-pink">
+        <p id={`${id}-error`} className="text-xs leading-5 text-red-300">
           {error}
         </p>
       )}
@@ -42,8 +42,8 @@ const fieldBaseClasses =
 
 function getStateClasses(error) {
   return error
-    ? 'border-vestro-pink/70 shadow-vestro-pink focus:border-vestro-pink focus:ring-4 focus:ring-vestro-pink/15'
-    : 'border-vestro-border hover:border-vestro-cyan/45 focus:border-vestro-cyan focus:ring-4 focus:ring-vestro-cyan/15';
+    ? 'border-red-300/70 focus:border-red-300 focus:ring-4 focus:ring-red-300/15'
+    : 'border-vestro-border hover:border-vestro-gold/45 focus:border-vestro-gold focus:ring-4 focus:ring-vestro-gold/15';
 }
 
 const InputField = forwardRef(function InputField(
@@ -121,7 +121,7 @@ function FileUploadField({ id, label, hint, error, className = '', inputClassNam
           className={joinClasses(
             fieldBaseClasses,
             getStateClasses(error),
-            'file:mr-4 file:rounded-lg file:border-0 file:bg-vestro-cyan/15 file:px-4 file:py-2 file:text-sm file:font-bold file:text-vestro-cyan hover:file:bg-vestro-pink/15 hover:file:text-vestro-pink',
+            'file:mr-4 file:rounded-lg file:border-0 file:bg-vestro-gold/15 file:px-4 file:py-2 file:text-sm file:font-bold file:text-vestro-gold-light hover:file:bg-vestro-gold/25 hover:file:text-vestro-gold-light',
             inputClassName,
           )}
           {...props}
@@ -139,7 +139,7 @@ function CheckboxField({ id, label, hint, error, className = '', inputClassName 
           id={id}
           type="checkbox"
           className={joinClasses(
-            'mt-1 h-4 w-4 rounded border-vestro-border bg-vestro-elevated text-vestro-pink focus:ring-vestro-cyan focus:ring-offset-0',
+            'mt-1 h-4 w-4 rounded border-vestro-border bg-vestro-elevated text-vestro-gold focus:ring-vestro-gold focus:ring-offset-0',
             inputClassName,
           )}
           {...props}
@@ -147,7 +147,7 @@ function CheckboxField({ id, label, hint, error, className = '', inputClassName 
         <span className="leading-6">{label}</span>
       </label>
       {hint && !error && <p className="pl-7 text-xs leading-5 text-vestro-muted">{hint}</p>}
-      {error && <p className="pl-7 text-xs leading-5 text-vestro-pink">{error}</p>}
+      {error && <p className="pl-7 text-xs leading-5 text-red-300">{error}</p>}
     </div>
   );
 }
@@ -160,7 +160,7 @@ function RadioField({ id, label, hint, error, className = '', inputClassName = '
           id={id}
           type="radio"
           className={joinClasses(
-            'mt-1 h-4 w-4 border-vestro-border bg-vestro-elevated text-vestro-cyan focus:ring-vestro-pink focus:ring-offset-0',
+            'mt-1 h-4 w-4 border-vestro-border bg-vestro-elevated text-vestro-gold focus:ring-vestro-gold focus:ring-offset-0',
             inputClassName,
           )}
           {...props}
@@ -168,7 +168,7 @@ function RadioField({ id, label, hint, error, className = '', inputClassName = '
         <span className="leading-6">{label}</span>
       </label>
       {hint && !error && <p className="pl-7 text-xs leading-5 text-vestro-muted">{hint}</p>}
-      {error && <p className="pl-7 text-xs leading-5 text-vestro-pink">{error}</p>}
+      {error && <p className="pl-7 text-xs leading-5 text-red-300">{error}</p>}
     </div>
   );
 }

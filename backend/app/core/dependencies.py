@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.core.security import decode_access_token
-from app.modules.auth.service import get_user_from_token_payload
 from app.modules.users.models import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login')
@@ -12,7 +11,25 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login')
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     payload = decode_access_token(token)
-    return get_user_from_token_payload(db, payload)
+    user_id = payload.get('user_id')
+
+    if not isinstance(user_id, int):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid authentication token.',
+            headers={'WWW-Authenticate': 'Bearer'},
+        )
+
+    user = db.get(User, user_id)
+
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid authentication token.',
+            headers={'WWW-Authenticate': 'Bearer'},
+        )
+
+    return user
 
 
 def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:

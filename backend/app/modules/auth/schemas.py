@@ -38,18 +38,30 @@ def normalize_email(value: str) -> str:
 
 
 class UserRegisterRequest(BaseModel):
-    full_name: str = Field(..., min_length=3, max_length=120)
+    full_name: str = Field(..., min_length=2, max_length=120)
+    username: str = Field(..., min_length=3, max_length=30)
     email: str = Field(..., max_length=255)
-    phone: str | None = Field(default=None, max_length=20)
+    nic_number: str = Field(..., max_length=20)
     password: str = Field(..., min_length=8, max_length=72)
+    role: str = Field(default='customer', max_length=20)
 
     @field_validator('full_name')
     @classmethod
     def validate_full_name(cls, value: str) -> str:
         full_name = value.strip()
-        if len(full_name) < 3:
-            raise ValueError('Full name must be at least 3 characters.')
+        if len(full_name) < 2:
+            raise ValueError('Full name must be at least 2 characters.')
+        if not re.match(r"^[A-Za-z][A-Za-z\s'-]*$", full_name):
+            raise ValueError("Full name may contain only letters, spaces, apostrophes, and hyphens.")
         return full_name
+
+    @field_validator('username')
+    @classmethod
+    def validate_username(cls, value: str) -> str:
+        username = value.strip().lower()
+        if not re.match(r'^[a-z0-9_.]{3,30}$', username):
+            raise ValueError('Username may contain only letters, numbers, underscore, and period.')
+        return username
 
     @field_validator('email')
     @classmethod
@@ -59,23 +71,26 @@ class UserRegisterRequest(BaseModel):
             raise ValueError('Email is required.')
         return normalize_email(email)
 
-    @field_validator('phone')
+    @field_validator('nic_number')
     @classmethod
-    def validate_phone(cls, value: str | None) -> str | None:
-        if value is None:
-            return None
-
-        phone = normalize_sri_lankan_phone(value)
-        if not phone:
-            return None
-        if not re.match(r'^\+947[0-9]{8}$', phone):
-            raise ValueError('Enter a valid Sri Lankan mobile number.')
-        return phone
+    def validate_nic_number(cls, value: str) -> str:
+        nic_number = value.strip()
+        if not re.match(r'^(?:\d{9}[vVxX]|\d{12})$', nic_number):
+            raise ValueError('Enter a valid Sri Lankan NIC number.')
+        return nic_number.upper()
 
     @field_validator('password')
     @classmethod
     def validate_password(cls, value: str) -> str:
         return validate_password_strength(value)
+
+    @field_validator('role')
+    @classmethod
+    def validate_role(cls, value: str) -> str:
+        role = value.strip().lower()
+        if role not in {'customer', 'designer'}:
+            raise ValueError('Role must be customer or designer.')
+        return role
 
 
 class LoginRequest(BaseModel):
@@ -126,10 +141,11 @@ class ResetPasswordResponse(BaseModel):
 class AuthUserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    user_id: int
+    id: int
     full_name: str
+    username: str
     email: str
-    phone: str | None
+    nic_number: str
     role: str
 
 
@@ -140,6 +156,7 @@ class LoginResponse(BaseModel):
 
 
 class UserResponse(AuthUserResponse):
+    profile_completed: bool
     is_active: bool
     is_verified: bool
     created_at: datetime
