@@ -11,7 +11,7 @@ import TrustedTeams from '../components/landing/TrustedTeams.jsx';
 
 function LandingPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-vestro-page text-vestro-text">
+    <main className="min-h-screen w-full overflow-x-clip bg-vestro-page text-vestro-text">
       <Navbar />
       <HeroSection />
       <JerseyShowcase />

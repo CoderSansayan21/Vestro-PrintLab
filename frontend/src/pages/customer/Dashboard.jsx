@@ -37,29 +37,29 @@ function Dashboard() {
   const displayName = getDisplayName(user);
 
   return (
-    <main className="min-h-screen bg-vestro-page text-vestro-text">
+    <main className="min-h-[100dvh] overflow-x-hidden bg-vestro-page text-vestro-text">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_15%_8%,rgba(236,22,140,0.13),transparent_30rem),radial-gradient(circle_at_84%_12%,rgba(22,191,253,0.12),transparent_28rem)]" />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
         <section className="grid gap-5 lg:grid-cols-[1fr_340px]">
           <NeonCard className="relative overflow-hidden p-6 sm:p-8">
             <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_80%_20%,rgba(22,191,253,0.14),transparent_18rem)]" />
             <div className="relative">
               <StatusBadge variant="info">Customer Dashboard</StatusBadge>
-              <h1 className="mt-5 text-3xl font-black leading-tight text-vestro-text sm:text-4xl">
+              <h1 className="mt-5 break-words text-2xl font-black leading-tight text-vestro-text sm:text-3xl lg:text-4xl">
                 Welcome back, {displayName}
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-vestro-muted sm:text-base">
                 Your VESTRO PRINTLAB workspace is ready for jersey design, AI artwork, apparel previews, and order tracking.
               </p>
 
-              <div className="mt-7 flex flex-wrap gap-3">
+              <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
                 {quickActions.map((action) => (
                   <button
                     key={action.label}
                     type="button"
                     disabled
-                    className={`rounded-full border px-5 py-3 text-sm font-black text-vestro-text transition hover:-translate-y-0.5 focus-visible:outline-vestro-cyan ${
+                    className={`min-h-11 w-full rounded-full border px-5 py-3 text-sm font-black text-vestro-text transition hover:-translate-y-0.5 focus-visible:outline-vestro-cyan sm:w-auto ${
                       action.tone === 'pink'
                         ? 'border-vestro-pink/55 bg-vestro-pink/15 shadow-vestro-pink hover:border-vestro-cyan/60 hover:shadow-vestro-cyan'
                         : action.tone === 'purple'
@@ -75,8 +75,8 @@ function Dashboard() {
           </NeonCard>
 
           <NeonCard className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-vestro-pink/40 bg-vestro-pink/10 text-xl font-black text-vestro-text shadow-vestro-pink">
+            <div className="flex min-w-0 items-center gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-vestro-pink/40 bg-vestro-pink/10 text-xl font-black text-vestro-text shadow-vestro-pink">
                 {getInitial(user)}
               </div>
               <div className="min-w-0">
@@ -86,11 +86,11 @@ function Dashboard() {
             </div>
 
             <div className="mt-6 grid gap-3 text-sm">
-              <div className="flex items-center justify-between rounded-xl border border-vestro-border bg-vestro-elevated/70 px-4 py-3">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-vestro-border bg-vestro-elevated/70 px-4 py-3">
                 <span className="text-vestro-muted">Role</span>
                 <StatusBadge variant="neutral">{user?.role || 'Customer'}</StatusBadge>
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-vestro-border bg-vestro-elevated/70 px-4 py-3">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-vestro-border bg-vestro-elevated/70 px-4 py-3">
                 <span className="text-vestro-muted">Status</span>
                 <StatusBadge variant="success">Active</StatusBadge>
               </div>
@@ -108,10 +108,10 @@ function Dashboard() {
 
         <section className="mt-6 grid gap-5 lg:grid-cols-3">
           <NeonCard className="lg:col-span-2">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-vestro-cyan">Recent designs</p>
-                <h2 className="mt-2 text-2xl font-black text-vestro-text">Design workspace</h2>
+                <h2 className="mt-2 text-xl font-black text-vestro-text sm:text-2xl">Design workspace</h2>
               </div>
               <CyberIcon tone="cyan">3D</CyberIcon>
             </div>
@@ -124,29 +124,29 @@ function Dashboard() {
           </NeonCard>
 
           <NeonCard>
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-vestro-pink">Order status</p>
-                <h2 className="mt-2 text-2xl font-black text-vestro-text">Tracking</h2>
+                <h2 className="mt-2 text-xl font-black text-vestro-text sm:text-2xl">Tracking</h2>
               </div>
               <CyberIcon tone="pink">OS</CyberIcon>
             </div>
 
             <div className="mt-5 space-y-3">
               <div className="rounded-xl border border-vestro-border bg-vestro-elevated/70 p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="text-sm font-bold text-vestro-muted">Pending</span>
                   <StatusBadge variant="neutral">0</StatusBadge>
                 </div>
               </div>
               <div className="rounded-xl border border-vestro-border bg-vestro-elevated/70 p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="text-sm font-bold text-vestro-muted">In progress</span>
                   <StatusBadge variant="info">0</StatusBadge>
                 </div>
               </div>
               <div className="rounded-xl border border-vestro-border bg-vestro-elevated/70 p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="text-sm font-bold text-vestro-muted">Completed</span>
                   <StatusBadge variant="success">0</StatusBadge>
                 </div>
@@ -157,10 +157,10 @@ function Dashboard() {
 
         <section className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.85fr]">
           <NeonCard>
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-vestro-cyan">Recent orders</p>
-                <h2 className="mt-2 text-2xl font-black text-vestro-text">Order history</h2>
+                <h2 className="mt-2 text-xl font-black text-vestro-text sm:text-2xl">Order history</h2>
               </div>
               <CyberIcon tone="purple">#</CyberIcon>
             </div>
@@ -172,10 +172,10 @@ function Dashboard() {
           </NeonCard>
 
           <NeonCard>
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-vestro-pink">Quick actions</p>
-                <h2 className="mt-2 text-2xl font-black text-vestro-text">Next move</h2>
+                <h2 className="mt-2 text-xl font-black text-vestro-text sm:text-2xl">Next move</h2>
               </div>
               <CyberIcon tone="pink">Go</CyberIcon>
             </div>

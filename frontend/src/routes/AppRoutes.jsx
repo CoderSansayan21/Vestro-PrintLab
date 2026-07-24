@@ -7,6 +7,7 @@ import ForgotPassword from '../pages/auth/ForgotPassword.jsx';
 import ResetPassword from '../pages/auth/ResetPassword.jsx';
 import ChooseRole from '../pages/public/ChooseRole.jsx';
 import Dashboard from '../pages/customer/Dashboard.jsx';
+import Profile from '../pages/customer/Profile.jsx';
 import AdminDashboard from '../pages/admin/AdminDashboard.jsx';
 import useAuthStore from '../store/authStore.js';
 import ProtectedRoute from './ProtectedRoute.jsx';
@@ -33,6 +34,10 @@ function AppRoutes() {
 
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/edit" element={<Profile />} />
+        <Route path="/profile/settings" element={<Profile />} />
+        <Route path="/profile/change-password" element={<Profile />} />
       </Route>
 
       <Route element={<AdminRoute />}>

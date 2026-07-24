@@ -77,6 +77,34 @@ def store_password_reset_token(
     return _commit_refresh(db, reset_token)
 
 
+def invalidate_unused_password_reset_tokens(db: Session, user_id: int) -> int:
+    """Mark all unused password reset tokens for a user as used."""
+    tokens = list(
+        db.scalars(
+            select(PasswordResetToken).where(
+                PasswordResetToken.user_id == user_id,
+                PasswordResetToken.used_at.is_(None),
+            )
+        ).all()
+    )
+
+    if not tokens:
+        return 0
+
+    used_at = datetime.now(timezone.utc)
+
+    try:
+        for token in tokens:
+            token.used_at = used_at
+            db.add(token)
+        db.commit()
+    except SQLAlchemyError:
+        db.rollback()
+        raise
+
+    return len(tokens)
+
+
 def create_password_reset_token(
     db: Session,
     *,
@@ -102,6 +130,47 @@ def invalidate_password_reset_token(db: Session, reset_token: PasswordResetToken
 
     reset_token.used_at = datetime.now(timezone.utc)
     return _commit_refresh(db, reset_token)
+
+
+def complete_password_reset(
+    db: Session,
+    *,
+    user: User,
+    reset_token: PasswordResetToken,
+    password_hash: str,
+) -> User:
+    """Update a user's password and invalidate active reset tokens in one transaction."""
+    used_at = datetime.now(timezone.utc)
+
+    try:
+        user.password_hash = password_hash
+        if hasattr(user, 'updated_at'):
+            user.updated_at = used_at
+
+        active_tokens = list(
+            db.scalars(
+                select(PasswordResetToken).where(
+                    PasswordResetToken.user_id == user.id,
+                    PasswordResetToken.used_at.is_(None),
+                )
+            ).all()
+        )
+
+        if reset_token not in active_tokens:
+            active_tokens.append(reset_token)
+
+        for token in active_tokens:
+            token.used_at = used_at
+            db.add(token)
+
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        db.refresh(reset_token)
+        return user
+    except SQLAlchemyError:
+        db.rollback()
+        raise
 
 
 def mark_password_reset_token_used(db: Session, reset_token: PasswordResetToken) -> PasswordResetToken | None:

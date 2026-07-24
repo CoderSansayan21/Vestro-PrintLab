@@ -2,6 +2,10 @@ class DomainError(Exception):
     """Base class for framework-independent domain errors."""
 
 
+class DatabaseOperationError(DomainError):
+    """Raised when a database write operation cannot be completed."""
+
+
 class UserError(DomainError):
     """Base class for user-related domain errors."""
 
@@ -61,6 +65,18 @@ class AccessDeniedError(AuthenticationError):
 
 class InvalidResetTokenError(AuthenticationError):
     """Raised when a password reset token is missing, invalid, expired, or already used."""
+
+
+class ExpiredResetTokenError(InvalidResetTokenError):
+    """Raised when a password reset token has expired."""
+
+
+class ResetTokenAlreadyUsedError(InvalidResetTokenError):
+    """Raised when a password reset token has already been used."""
+
+
+class PasswordReuseError(AuthenticationError):
+    """Raised when a new password matches the user's existing password."""
 
 
 class TokenError(AuthenticationError):

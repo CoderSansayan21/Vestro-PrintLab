@@ -49,19 +49,18 @@ class UserUpdate(BaseModel):
 
 
 class UserResponse(BaseModel):
+    """Authenticated user profile response."""
+
     model_config = ConfigDict(from_attributes=True)
 
     id: int
     full_name: str
     username: str
     email: NormalizedEmail
-    nic_number: str
     role: UserRole
     avatar_url: str | None = None
     phone_number: str | None = None
     profile_completed: bool
-    is_active: bool
-    is_verified: bool
     created_at: datetime
     updated_at: datetime
 
@@ -84,3 +83,25 @@ class UserMeResponse(BaseModel):
     role: UserRole
     avatar: str | None = None
     created_at: datetime
+
+
+class ChangePasswordRequest(BaseModel):
+    """Request body for changing the authenticated user's password."""
+
+    current_password: str = Field(..., min_length=1, max_length=72)
+    new_password: StrongPassword = Field(..., min_length=8, max_length=72)
+    confirm_password: str = Field(..., min_length=8, max_length=72)
+
+    @model_validator(mode='after')
+    def validate_password_rules(self) -> 'ChangePasswordRequest':
+        if self.new_password != self.confirm_password:
+            raise ValueError('New password and confirm password must match.')
+
+        if self.current_password == self.new_password:
+            raise ValueError('New password must be different from the current password.')
+
+        return self
+
+
+class SuccessMessageResponse(BaseModel):
+    message: str

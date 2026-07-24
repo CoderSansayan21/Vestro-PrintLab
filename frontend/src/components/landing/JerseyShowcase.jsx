@@ -42,7 +42,7 @@ function JerseyShowcase() {
   const isPlaceholder360 = viewMode === '360';
 
   return (
-    <section id="products" className="bg-vestro-page py-16 sm:py-20 lg:py-28">
+    <section id="products" className="w-full bg-vestro-page py-12 sm:py-20 lg:py-28">
       <Container>
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1fr] lg:items-center">
           <div>
@@ -76,8 +76,8 @@ function JerseyShowcase() {
             </div>
           </div>
 
-          <div className="relative min-h-[30rem] overflow-hidden rounded-2xl border border-vestro-border bg-vestro-card px-5 pb-8 pt-10 shadow-vestro-md sm:min-h-[36rem] sm:px-8 lg:min-h-[40rem]">
-            <div className="absolute left-1/2 top-[12%] h-64 w-64 -translate-x-1/2 rounded-full bg-vestro-gold/10 blur-3xl" />
+          <div className="relative min-h-[24rem] w-full overflow-hidden rounded-2xl border border-vestro-border bg-vestro-card px-4 pb-7 pt-9 shadow-vestro-md sm:min-h-[36rem] sm:px-8 lg:min-h-[40rem]">
+            <div className="absolute left-1/2 top-[12%] h-52 w-52 -translate-x-1/2 rounded-full bg-vestro-gold/10 blur-3xl sm:h-64 sm:w-64" />
             <div className="absolute bottom-10 left-1/2 h-10 w-[78%] -translate-x-1/2 rounded-full bg-vestro-gold/12 blur-xl" />
             {isPlaceholder360 && (
               <div className="absolute left-1/2 top-6 z-20 -translate-x-1/2 rounded-full border border-vestro-gold/35 bg-vestro-page/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-vestro-gold-light">
@@ -85,14 +85,14 @@ function JerseyShowcase() {
               </div>
             )}
 
-            <div className="relative mx-auto flex max-w-3xl items-end justify-center">
+            <div className="relative mx-auto flex w-full max-w-3xl items-end justify-center">
               <JerseyPreview
                 label="Back"
                 position="object-[74%_50%]"
                 isActive={isBackActive}
                 isDimmed={isFrontActive}
                 className={joinClasses(
-                  'absolute right-[4%] top-8 w-[48%] sm:right-[9%] sm:w-[44%] lg:top-10',
+                  'absolute right-[3%] top-8 w-[49%] sm:right-[9%] sm:w-[44%] lg:top-10',
                   isBackActive ? 'z-20 opacity-100' : 'opacity-90',
                 )}
               />
@@ -102,7 +102,7 @@ function JerseyShowcase() {
                 isActive={isFrontActive}
                 isDimmed={isBackActive}
                 className={joinClasses(
-                  'relative mt-8 w-[56%] sm:w-[50%]',
+                  'relative mt-8 w-[58%] sm:w-[50%]',
                   isBackActive ? 'z-10' : 'z-20',
                 )}
               />

@@ -45,10 +45,10 @@ function ChooseRole() {
   };
 
   return (
-    <main className="min-h-screen bg-vestro-page text-vestro-text">
+    <main className="min-h-[100dvh] overflow-x-hidden bg-vestro-page text-vestro-text">
       <section
         aria-labelledby="choose-role-title"
-        className="flex min-h-screen items-center py-16 sm:py-20 lg:py-24"
+        className="flex min-h-[100dvh] items-center py-12 sm:py-16 lg:py-24"
       >
         <Container>
           <div className="mx-auto max-w-3xl text-center">
@@ -57,7 +57,7 @@ function ChooseRole() {
             </p>
             <h1
               id="choose-role-title"
-              className="mt-4 text-3xl font-black leading-[1.08] text-vestro-text sm:text-4xl lg:text-5xl"
+              className="mt-4 text-2xl font-black leading-[1.08] text-vestro-text sm:text-4xl lg:text-5xl"
             >
               Choose Your Role
             </h1>
@@ -79,7 +79,7 @@ function ChooseRole() {
                   onClick={() => setSelectedRole(role.title)}
                   onKeyDown={(event) => handleCardKeyDown(event, role.title)}
                   className={joinClasses(
-                    'cursor-pointer rounded-2xl border bg-vestro-card p-6 text-center shadow-vestro-sm outline-none transition duration-200 sm:p-8',
+                    'min-w-0 cursor-pointer rounded-2xl border bg-vestro-card p-5 text-center shadow-vestro-sm outline-none transition duration-200 sm:p-8',
                     isSelected
                       ? 'scale-[1.02] border-vestro-gold/70 shadow-[0_22px_50px_rgba(0,0,0,0.34)]'
                       : 'border-vestro-border hover:border-vestro-gold/40',
@@ -97,7 +97,7 @@ function ChooseRole() {
                   <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-vestro-gold-light">
                     {role.label}
                   </p>
-                  <h2 className="mt-3 text-2xl font-black leading-tight text-vestro-text">
+                  <h2 className="mt-3 text-xl font-black leading-tight text-vestro-text sm:text-2xl">
                     {role.title}
                   </h2>
                   <p className="mt-4 text-sm leading-7 text-vestro-muted">

@@ -17,9 +17,9 @@ function DataTable({
   className = '',
 }) {
   return (
-    <div className={`overflow-hidden rounded-2xl border border-vestro-border bg-vestro-card/90 shadow-vestro-sm ${className}`}>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-vestro-border text-left text-sm">
+    <div className={`max-w-full overflow-hidden rounded-2xl border border-vestro-border bg-vestro-card/90 shadow-vestro-sm ${className}`}>
+      <div className="overflow-x-auto" tabIndex={0} aria-label="Scrollable data table">
+        <table className="min-w-[42rem] divide-y divide-vestro-border text-left text-sm md:min-w-full">
           <thead className="bg-vestro-secondary/95 text-xs font-black uppercase tracking-[0.16em] text-vestro-gold-light">
             <tr>
               {columns.map((column) => (
@@ -60,7 +60,7 @@ function DataTable({
                   })}
                   {actions && (
                     <td className="whitespace-nowrap px-4 py-4 text-right align-middle">
-                      <div className="inline-flex items-center gap-2">{actions(row)}</div>
+                      <div className="inline-flex flex-wrap items-center justify-end gap-2">{actions(row)}</div>
                     </td>
                   )}
                 </tr>

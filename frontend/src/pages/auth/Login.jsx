@@ -133,7 +133,7 @@ function Login() {
   };
 
   return (
-    <main className="min-h-screen bg-[#03070B] text-[#F8FAFC]">
+    <main className="min-h-[100dvh] overflow-x-hidden bg-[#03070B] text-[#F8FAFC]">
       <style>{`
         @keyframes vestro-login-enter {
           from { opacity: 0; transform: translateY(10px); }
@@ -145,8 +145,8 @@ function Login() {
         }
       `}</style>
 
-      <section className="grid min-h-screen lg:grid-cols-[45%_55%]">
-        <aside className="relative hidden overflow-hidden border-r border-[rgba(214,167,55,0.20)] bg-[#081018] px-8 py-10 md:block lg:px-12 xl:px-16">
+      <section className="grid min-h-[100dvh] lg:grid-cols-[45%_55%]">
+        <aside className="relative hidden overflow-hidden border-r border-[rgba(214,167,55,0.20)] bg-[#081018] px-8 py-10 lg:block lg:px-12 xl:px-16">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(214,167,55,0.13),transparent_24rem),radial-gradient(circle_at_80%_88%,rgba(242,206,114,0.08),transparent_28rem)]" />
           <div className="relative flex h-full flex-col justify-between">
             <Link to="/" aria-label="VESTRO PRINTLAB home" className="inline-flex w-fit items-center gap-3 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6A737]">
@@ -163,7 +163,7 @@ function Login() {
               <p className="text-xs font-bold uppercase leading-6 tracking-[0.24em] text-[#F2CE72]">
                 AI-POWERED SPORTSWEAR PLATFORM
               </p>
-              <h1 className="mt-5 text-4xl font-black leading-[1.04] text-[#F8FAFC] lg:text-5xl xl:text-6xl">
+              <h1 className="mt-5 text-4xl font-black leading-[1.04] text-[#F8FAFC] lg:text-5xl 2xl:text-6xl">
                 Create. Customize. Compete.
               </h1>
               <p className="mt-6 max-w-lg text-base leading-8 text-[#B5BAC3] lg:text-lg">
@@ -186,9 +186,9 @@ function Login() {
           </div>
         </aside>
 
-        <section className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 md:px-8 lg:px-12">
+        <section className="flex min-h-[100dvh] items-center justify-center px-4 py-8 sm:px-6 md:px-8 lg:px-12">
           <div className="w-full max-w-xl">
-            <div className="mb-8 flex justify-center md:hidden">
+            <div className="mb-8 flex justify-center lg:hidden">
               <Link to="/" aria-label="VESTRO PRINTLAB home" className="inline-flex items-center gap-3 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6A737]">
                 <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-[#D6A737]/30 bg-[#0C141D]">
                   <img src={logo} alt="" className="h-11 w-11 object-contain" />
@@ -205,7 +205,7 @@ function Login() {
                 <p className="text-xs font-bold uppercase leading-6 tracking-[0.22em] text-[#F2CE72]">
                   Secure Login
                 </p>
-                <h2 className="mt-3 text-3xl font-black leading-[1.08] text-[#F8FAFC] sm:text-4xl">
+                <h2 className="mt-3 text-2xl font-black leading-[1.08] text-[#F8FAFC] sm:text-3xl lg:text-4xl">
                   Welcome Back
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-[#B5BAC3]">
@@ -320,7 +320,7 @@ function Login() {
                   {isSubmitting ? 'Signing In...' : 'Sign In'}
                 </button>
 
-                <div className="flex items-center gap-4 text-xs font-bold uppercase leading-5 tracking-[0.16em] text-[#9CA3AF]">
+                <div className="flex items-center gap-3 text-center text-[0.68rem] font-bold uppercase leading-5 tracking-[0.12em] text-[#9CA3AF] sm:gap-4 sm:text-xs sm:tracking-[0.16em]">
                   <span className="h-px flex-1 bg-[rgba(214,167,55,0.20)]" />
                   Or continue with
                   <span className="h-px flex-1 bg-[rgba(214,167,55,0.20)]" />

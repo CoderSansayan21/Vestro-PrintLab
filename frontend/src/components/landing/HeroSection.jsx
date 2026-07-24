@@ -66,41 +66,41 @@ function StarIcon() {
 
 function HeroSection() {
   return (
-    <section id="home" className="relative overflow-hidden bg-vestro-page pt-16 text-vestro-text md:pt-[72px] xl:pt-20">
-      <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,7,11,0.82)_0%,rgba(3,7,11,0.96)_72%,#03070B_100%),radial-gradient(ellipse_at_72%_20%,rgba(242,206,114,0.16),transparent_34rem),radial-gradient(ellipse_at_84%_58%,rgba(214,167,55,0.10),transparent_30rem),linear-gradient(115deg,#03070B_0%,#071018_48%,#03070B_100%)]" />
-      <div aria-hidden="true" className="absolute inset-x-[-10%] top-10 h-44 bg-[radial-gradient(ellipse_at_center,rgba(242,206,114,0.12),transparent_62%)] blur-2xl" />
-      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent" />
-      <div aria-hidden="true" className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-vestro-page via-vestro-page/88 to-transparent lg:w-[62%]" />
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-vestro-page to-transparent" />
+    <section id="home" className="relative w-full overflow-hidden bg-vestro-page pt-16 text-vestro-text md:pt-[72px] xl:pt-20">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(3,7,11,0.82)_0%,rgba(3,7,11,0.96)_72%,#03070B_100%),radial-gradient(ellipse_at_72%_20%,rgba(242,206,114,0.16),transparent_34rem),radial-gradient(ellipse_at_84%_58%,rgba(214,167,55,0.10),transparent_30rem),linear-gradient(115deg,#03070B_0%,#071018_48%,#03070B_100%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-[-10%] top-10 z-0 hidden h-44 bg-[radial-gradient(ellipse_at_center,rgba(242,206,114,0.12),transparent_62%)] blur-2xl sm:block" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-0 h-28 bg-gradient-to-b from-black/45 to-transparent sm:h-32 sm:from-black/80" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 z-0 w-full bg-gradient-to-r from-vestro-page via-vestro-page/88 to-transparent lg:w-[62%]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-40 bg-gradient-to-t from-vestro-page to-transparent" />
 
-      <Container className="relative grid min-h-[calc(100vh-4rem)] items-center gap-10 py-12 sm:py-16 md:min-h-[calc(100vh-4.5rem)] lg:grid-cols-[42fr_58fr] lg:gap-12 lg:py-24 xl:min-h-[calc(100vh-5rem)]">
-        <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
-          <span className="inline-flex rounded-full border border-vestro-gold/30 bg-vestro-gold/10 px-3.5 py-2 text-xs font-bold uppercase tracking-[0.18em] text-vestro-gold-light">
+      <Container className="relative z-10 grid w-full grid-cols-1 items-start gap-8 py-6 sm:gap-10 sm:py-14 lg:min-h-[calc(100vh-4.5rem)] lg:grid-cols-[42fr_58fr] lg:items-center lg:gap-12 lg:py-24 xl:min-h-[calc(100vh-5rem)]">
+        <div className="relative z-20 mx-auto block w-full max-w-2xl text-center lg:mx-0 lg:text-left">
+          <span className="inline-flex max-w-full rounded-full border border-vestro-gold/30 bg-vestro-gold/10 px-3 py-2 text-center text-[0.68rem] font-bold uppercase leading-5 tracking-[0.14em] text-vestro-gold-light sm:px-3.5 sm:text-xs sm:tracking-[0.18em]">
             AI-POWERED JERSEY CUSTOMIZATION
           </span>
 
-          <h1 className="mt-6 text-4xl font-black leading-[1.05] text-vestro-text sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 text-[2rem] font-black leading-[1.08] text-vestro-text sm:mt-6 sm:text-5xl lg:text-6xl">
             Design Your Dream Jersey
             <span className="block text-vestro-gold-light">Powered by AI.</span>
             <span className="block">Built for Champions.</span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-vestro-muted sm:text-lg lg:mx-0">
+          <p className="mx-auto mt-5 w-full max-w-xl text-sm leading-7 text-vestro-muted sm:mt-6 sm:text-lg sm:leading-8 lg:mx-0">
             Create premium custom jerseys with AI-generated artwork, real-time 3D previews, and seamless online ordering.
           </p>
 
-          <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
-            <PrimaryButton as="a" href="#how-it-works">
+          <div className="mt-7 flex w-full flex-col justify-center gap-3 sm:mt-9 sm:flex-row sm:gap-4 lg:justify-start">
+            <PrimaryButton as="a" href="#how-it-works" className="w-full sm:w-auto">
               Start Designing
               <ArrowIcon />
             </PrimaryButton>
-            <SecondaryButton as="a" href="#demo">
+            <SecondaryButton as="a" href="#demo" className="w-full sm:w-auto">
               <PlayIcon />
               Watch Demo
             </SecondaryButton>
           </div>
 
-          <div className="mt-8 flex flex-col justify-center gap-4 border-t border-vestro-border pt-6 sm:flex-row sm:items-center lg:justify-start">
+          <div className="mt-7 flex flex-col justify-center gap-3 border-t border-vestro-border pt-5 sm:mt-8 sm:flex-row sm:items-center sm:gap-4 sm:pt-6 lg:justify-start">
             <div>
               <p className="text-sm font-black text-vestro-text">4.9/5 from 1,200+ customers</p>
             </div>
@@ -111,7 +111,7 @@ function HeroSection() {
             </div>
           </div>
 
-          <div className="mt-7 grid gap-0 overflow-hidden rounded-2xl border border-vestro-border bg-vestro-card/80 text-left shadow-vestro-sm sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-7 grid w-full grid-cols-1 gap-0 overflow-hidden rounded-2xl border border-vestro-border bg-vestro-card/80 text-left shadow-vestro-sm sm:grid-cols-2 lg:grid-cols-4">
             {featureHighlights.map((feature, index) => (
               <div
                 key={feature.label}
@@ -130,8 +130,8 @@ function HeroSection() {
           </div>
         </div>
 
-        <div className="min-h-[22rem] rounded-2xl border border-vestro-border bg-vestro-card/80 p-4 shadow-vestro-md sm:min-h-[28rem] lg:min-h-[34rem]">
-          <div className="flex h-full min-h-[20rem] items-center justify-center rounded-xl border border-dashed border-vestro-gold/25 bg-vestro-secondary/70 px-6 text-center sm:min-h-[26rem] lg:min-h-[32rem]">
+        <div className="hidden min-h-[34rem] rounded-2xl border border-vestro-border bg-vestro-card/80 p-4 shadow-vestro-md lg:block">
+          <div className="flex h-full min-h-[10.5rem] items-center justify-center rounded-xl border border-dashed border-vestro-gold/25 bg-vestro-secondary/70 px-4 text-center sm:min-h-[14rem] sm:px-6 lg:min-h-[32rem]">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-vestro-gold-light">
                 Jersey showcase placeholder

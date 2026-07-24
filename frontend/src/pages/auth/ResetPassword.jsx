@@ -365,8 +365,8 @@ function ResetPassword() {
   };
 
   return (
-    <main className="min-h-screen bg-[#03070B] text-[#F8FAFC]">
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <main className="min-h-[100dvh] overflow-x-hidden bg-[#03070B] text-[#F8FAFC]">
+      <section className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(214,167,55,0.12),transparent_24rem),linear-gradient(180deg,#03070B_0%,#071018_100%)]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#D6A737]/35 to-transparent" />
 
@@ -392,7 +392,7 @@ function ResetPassword() {
               <p className="text-xs font-bold uppercase leading-6 tracking-[0.22em] text-[#F2CE72]">
                 Secure Reset
               </p>
-              <h1 id="reset-password-title" className="mt-3 text-3xl font-black leading-[1.08] text-[#F8FAFC] sm:text-4xl">
+              <h1 id="reset-password-title" className="mt-3 text-2xl font-black leading-[1.08] text-[#F8FAFC] sm:text-3xl lg:text-4xl">
                 Create a New Password
               </h1>
               <p className="mx-auto mt-4 max-w-sm text-sm leading-7 text-[#B5BAC3]">

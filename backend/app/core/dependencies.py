@@ -1,11 +1,18 @@
 from typing import Any
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.exceptions import AccessDeniedError, InactiveUserError, InvalidTokenError, UnverifiedUserError, UserNotFoundError
+from app.core.exceptions import (
+    AccessDeniedError,
+    ExpiredTokenError,
+    InactiveUserError,
+    InvalidTokenError,
+    UnverifiedUserError,
+    UserNotFoundError,
+)
 from app.core.jwt import decode_access_token
 from app.modules.users import repository as users_repository
 from app.modules.users.models import User
@@ -23,32 +30,65 @@ def _get_user_id_from_payload(payload: dict[str, Any]) -> int:
 
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
-    payload = decode_access_token(token)
-    user_id = _get_user_id_from_payload(payload)
+    """Resolve the authenticated user from a JWT bearer token."""
+    try:
+        payload = decode_access_token(token)
+    except ExpiredTokenError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+            headers={'WWW-Authenticate': 'Bearer'},
+        ) from exc
+    except InvalidTokenError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+            headers={'WWW-Authenticate': 'Bearer'},
+        ) from exc
+
+    try:
+        user_id = _get_user_id_from_payload(payload)
+    except InvalidTokenError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+            headers={'WWW-Authenticate': 'Bearer'},
+        ) from exc
+
     user = users_repository.get_user_by_id(db, user_id)
 
     if user is None:
-        raise UserNotFoundError('User could not be found for the supplied token.')
+        exc = UserNotFoundError('User could not be found for the supplied token.')
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
 
     return user
 
 
 def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
+    """Require an authenticated user with an active account."""
     if not current_user.is_active:
-        raise InactiveUserError('This account is inactive.')
+        exc = InactiveUserError('This account is inactive.')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
 
     return current_user
 
 
 def get_current_verified_user(current_user: User = Depends(get_current_active_user)) -> User:
+    """Require an authenticated active user with a verified account."""
     if not current_user.is_verified:
-        raise UnverifiedUserError('This account has not been verified.')
+        exc = UnverifiedUserError('This account has not been verified.')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
 
     return current_user
 
 
 def get_current_admin_user(current_user: User = Depends(get_current_active_user)) -> User:
+    """Require an authenticated active administrator."""
     if current_user.role.lower() != 'admin':
-        raise AccessDeniedError('Admin access is required.')
+        exc = AccessDeniedError('Admin access is required.')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
 
     return current_user

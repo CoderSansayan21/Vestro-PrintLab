@@ -14,6 +14,17 @@ class Settings(BaseSettings):
     secret_key: str = Field(..., alias='SECRET_KEY')
     algorithm: str = Field('HS256', alias='ALGORITHM')
     access_token_expire_minutes: int = Field(30, alias='ACCESS_TOKEN_EXPIRE_MINUTES')
+    app_env: str = Field('development', alias='APP_ENV')
+    frontend_reset_password_url: str = Field(
+        'http://localhost:5173/reset-password/{token}',
+        alias='FRONTEND_RESET_PASSWORD_URL',
+    )
+    password_reset_token_expire_minutes: int = Field(15, alias='PASSWORD_RESET_TOKEN_EXPIRE_MINUTES')
+    email_from: str | None = Field(default=None, alias='EMAIL_FROM')
+    smtp_host: str | None = Field(default=None, alias='SMTP_HOST')
+    smtp_port: int = Field(587, alias='SMTP_PORT')
+    smtp_username: str | None = Field(default=None, alias='SMTP_USERNAME')
+    smtp_password: str | None = Field(default=None, alias='SMTP_PASSWORD')
     google_oauth_client_id: str | None = Field(default=None, alias='GOOGLE_OAUTH_CLIENT_ID')
     google_oauth_client_secret: str | None = Field(default=None, alias='GOOGLE_OAUTH_CLIENT_SECRET')
     google_oauth_redirect_uri: str | None = Field(default=None, alias='GOOGLE_OAUTH_REDIRECT_URI')

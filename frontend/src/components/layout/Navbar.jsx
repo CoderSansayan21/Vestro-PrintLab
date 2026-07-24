@@ -251,7 +251,7 @@ function Navbar() {
             isMenuOpen ? 'translate-y-0' : '-translate-y-3',
           )}
         >
-          <div className="mx-auto grid max-w-[1280px] gap-2">
+          <div className="mx-auto grid max-h-[calc(100dvh-5rem)] max-w-[1280px] gap-2 overflow-y-auto">
             <button
               type="button"
               aria-label="Search"

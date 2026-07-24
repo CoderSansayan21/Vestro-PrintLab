@@ -96,10 +96,18 @@ function Navbar() {
     }
 
     const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
     document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
@@ -123,7 +131,7 @@ function Navbar() {
           : 'border-b border-transparent bg-transparent'
       }`}
     >
-      <nav className="mx-auto flex h-20 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
         <Link
           to="/"
           onClick={closeMenu}
@@ -138,7 +146,7 @@ function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden items-center justify-center gap-1 text-sm font-bold lg:flex">
+        <div className="hidden items-center justify-center gap-1 text-sm font-bold xl:flex">
           {resolvedNavItems.map((item) =>
             item.type === 'route' ? (
               <NavLink
@@ -167,7 +175,7 @@ function Navbar() {
           )}
         </div>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           <button
             type="button"
             aria-label="Search"
@@ -208,7 +216,7 @@ function Navbar() {
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-2 xl:hidden">
           <Link
             to="/#cart"
             aria-label={`Cart with ${cartCount} items`}
@@ -224,6 +232,7 @@ function Navbar() {
             type="button"
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
+            aria-controls="public-navigation-menu"
             onClick={() => setIsOpen((open) => !open)}
             className="flex h-11 w-11 items-center justify-center rounded-xl border border-vestro-gold/25 bg-vestro-elevated/80 text-vestro-text transition duration-200 hover:border-vestro-gold/50 hover:text-vestro-gold-light focus-visible:outline-vestro-gold"
           >
@@ -233,17 +242,18 @@ function Navbar() {
       </nav>
 
       <div
-        className={`lg:hidden ${
+        className={`xl:hidden ${
           isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         } transition duration-200`}
       >
-        <div className="fixed inset-0 top-20 bg-black/55" onClick={closeMenu} aria-hidden="true" />
+        <div className="fixed inset-0 top-16 bg-black/55 sm:top-20" onClick={closeMenu} aria-hidden="true" />
         <div
+          id="public-navigation-menu"
           className={`relative border-t border-vestro-border bg-vestro-secondary/98 px-4 pb-6 pt-4 shadow-vestro-md transition duration-300 sm:px-6 ${
             isOpen ? 'translate-y-0' : '-translate-y-4'
           }`}
         >
-          <div className="mx-auto grid max-w-[1280px] gap-2">
+          <div className="mx-auto grid max-h-[calc(100dvh-5rem)] max-w-[1280px] gap-2 overflow-y-auto">
             <button
               type="button"
               aria-label="Search"

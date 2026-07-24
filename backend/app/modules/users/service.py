@@ -1,17 +1,28 @@
+import logging
 from collections.abc import Callable, Mapping
 from typing import Any
 
 from pydantic import BaseModel
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import EmailAlreadyExistsError, NICAlreadyExistsError, UsernameAlreadyExistsError
-from app.core.security import hash_password
+from app.core.exceptions import (
+    DatabaseOperationError,
+    EmailAlreadyExistsError,
+    InactiveUserError,
+    InvalidCredentialsError,
+    NICAlreadyExistsError,
+    UsernameAlreadyExistsError,
+)
+from app.core.security import hash_password, verify_password
 from app.modules.users import repository
 from app.modules.users.models import User
+from app.modules.users.schemas import ChangePasswordRequest, SuccessMessageResponse, UserResponse
 
 UserInput = BaseModel | Mapping[str, Any]
 UserLookup = Callable[[Session, str], User | None]
 DomainErrorFactory = Callable[[], Exception]
+logger = logging.getLogger(__name__)
 
 
 def _to_dict(data: UserInput, *, exclude_unset: bool = False) -> dict[str, Any]:
@@ -94,6 +105,11 @@ def get_user(db: Session, user_id: int) -> User | None:
     return repository.get_user_by_id(db, user_id)
 
 
+def get_current_user_profile(current_user: User) -> UserResponse:
+    """Return the authenticated user's profile response."""
+    return UserResponse.model_validate(current_user)
+
+
 def get_user_by_email(db: Session, email: str) -> User | None:
     return repository.get_user_by_email(db, email)
 
@@ -130,3 +146,32 @@ def delete_user(db: Session, user_id: int) -> User | None:
 
 def list_users(db: Session, *, offset: int = 0, limit: int = 100) -> list[User]:
     return repository.list_users(db, offset=max(offset, 0), limit=max(1, limit))
+
+
+def change_password(db: Session, user: User, password_data: ChangePasswordRequest) -> SuccessMessageResponse:
+    """Validate and update the authenticated user's password."""
+    if not user.is_active:
+        logger.warning('Inactive account password change attempt: user_id=%s', user.id)
+        raise InactiveUserError('This account is inactive.')
+
+    if not verify_password(password_data.current_password, user.password_hash):
+        logger.warning('Failed password change attempt: user_id=%s', user.id)
+        raise InvalidCredentialsError('Current password is incorrect.')
+
+    if verify_password(password_data.new_password, user.password_hash):
+        raise InvalidCredentialsError('New password must be different from the current password.')
+
+    try:
+        updated_user = repository.update_user(
+            db,
+            user.id,
+            {'password_hash': hash_password(password_data.new_password)},
+        )
+    except SQLAlchemyError as exc:
+        raise DatabaseOperationError('Unable to update password at this time.') from exc
+
+    if updated_user is None:
+        raise DatabaseOperationError('Unable to update password for this user.')
+
+    logger.info('Password changed successfully: user_id=%s', user.id)
+    return SuccessMessageResponse(message='Password changed successfully')

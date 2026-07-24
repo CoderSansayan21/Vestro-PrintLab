@@ -6,7 +6,7 @@ function NeonCard({ as: Component = 'section', className = '', children, ...prop
   return (
     <Component
       className={joinClasses(
-        'rounded-2xl border border-vestro-border bg-vestro-card p-5 shadow-vestro-sm transition duration-200 hover:border-vestro-gold/35 hover:shadow-vestro-gold sm:p-6',
+        'min-w-0 rounded-2xl border border-vestro-border bg-vestro-card p-4 shadow-vestro-sm transition duration-200 hover:border-vestro-gold/35 hover:shadow-vestro-gold sm:p-5 lg:p-6',
         className,
       )}
       {...props}

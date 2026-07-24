@@ -21,7 +21,7 @@ function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex min-h-screen items-center justify-center bg-black/75 px-4 py-6 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex min-h-[100dvh] items-center justify-center overflow-y-auto bg-black/75 px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
@@ -36,7 +36,7 @@ function Modal({
 
       <section
         className={joinClasses(
-          'relative w-full max-w-lg rounded-2xl border border-vestro-gold/35 bg-vestro-card p-5 text-vestro-text shadow-vestro-gold sm:p-6',
+          'relative max-h-[calc(100dvh-2rem)] w-full max-w-lg overflow-y-auto rounded-2xl border border-vestro-gold/35 bg-vestro-card p-4 text-vestro-text shadow-vestro-gold sm:max-h-[calc(100dvh-3rem)] sm:p-6',
           className,
         )}
       >
@@ -64,7 +64,7 @@ function Modal({
           </button>
         </div>
 
-        <div className="mt-6">{children}</div>
+        <div className="mt-5 min-w-0 sm:mt-6">{children}</div>
 
         {actions && (
           <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
